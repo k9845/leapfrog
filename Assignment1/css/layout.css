@@ -1,0 +1,91 @@
+
+.breadcrums ul{
+    float: right;
+}
+
+.breadcrums ul li{
+    float: left;
+    list-style-type: none;
+    padding-left: 6px;
+    padding-right: 6px;
+    color:#7f8887;
+    display: block;
+    line-height: 80px;
+}
+
+
+
+
+
+
+
+.body_wrapper{
+	height:1000px;
+	padding:1%;
+	margin-top:50px;
+
+	
+}
+.body_intro{
+	
+	
+	margin-top: 50px;
+
+	margin-left: 172px;
+
+}
+.col1{
+	
+	float: left;
+  	padding-left: 10px;
+    padding-bottom: 200px;
+    
+    margin-top: 20px;
+  
+    margin-left: 172px;
+}
+
+
+.col2{
+	float: left;
+  	padding-left: 500px;
+    padding-bottom: 400px;
+    margin-left: 20px;
+    margin-top: 20px;
+      
+}
+.col3{
+	float: left;
+  padding-left: 325px;
+    padding-bottom: 325px;
+    
+    margin-top: 20px;
+    
+    margin-left: 10px;
+	
+
+}
+.body_right{
+	width:75%;
+	height: 500px;
+	background-color: pink;
+	float:left;
+	
+}
+.body_right_l{
+	width:75%;
+	height: 500px;
+	background-color: brown;
+	float:left;
+}
+.body_right_r{
+	width:25%;
+	height: 500px;
+	background-color: aqua;
+	float:left;
+}
+.footer_wrapper{
+	height:60px;
+	background-color: green;
+}
+

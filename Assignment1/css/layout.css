@@ -1,3 +1,55 @@
+.main-page{
+    background-color: white;
+}
+
+.header-wrapper-top {
+    background-color: #76c7c1;
+    padding-left: 172px;
+    padding-right: 172px;
+    line-height: 80px;
+}
+
+.clear {
+    clear: both;
+}
+
+.logo {
+    float: left;
+}
+
+.page-menu ul {
+    float: right;
+}
+
+.page-menu ul li{
+    float: left;
+    list-style-type: none;
+    padding-left: 31px;
+    padding-right: 19px;
+    color:white;   
+}
+
+.page-menu ul li:hover {
+    background-color: #60a29e;
+    background-image: image('images\menu-item-hover-background.png');
+    cursor: pointer;
+}
+
+.header-wrapper-buttom {
+    background: #ececec;
+    padding-left: 172px;
+    padding-right: 172px;
+    line-height: 80px;
+}
+
+.page-name {
+    color: #7f8887;
+    float: left;
+}
+
+
+
+
 
 .breadcrums ul{
     float: right;

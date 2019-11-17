@@ -2,4 +2,36 @@
 	padding: 0px;
 	margin: 0px;
 	font-family: "Arial";
+	
 }
+img {
+    width:auto;
+    height: auto; 
+    display: block;
+}
+
+a{
+    cursor: pointer;
+}
+
+h2 {
+    color: #e34e48;
+}
+
+h3 {
+    padding-bottom: 40px;
+}
+
+p {
+    color : #7e807f;
+}
+
+.clear:before, .clear:after {
+	content:"";
+	display:table;
+}
+
+.clear:after {
+    clear: both;
+}
+

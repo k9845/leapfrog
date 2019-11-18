@@ -1,0 +1,24 @@
+*{
+    padding:0;
+    margin:0;
+}
+.wrapper-width{
+    width:73.125em;
+    margin:0 auto;
+}
+.font-Arial{
+    font-family: Arial;
+}
+a{
+    text-decoration: none;
+}
+
+.clear-fix{
+    contain: "";
+    clear: both;
+    display: table;
+}
+
+.footer-container{
+    color:#f6fbfa;
+}

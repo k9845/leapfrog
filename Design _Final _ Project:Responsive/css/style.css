@@ -1,0 +1,8 @@
+@media screen and (max-width: 600px){
+	.top-list{
+		float:none;
+	}
+	.top-list ul li{
+		float: none;
+}
+}

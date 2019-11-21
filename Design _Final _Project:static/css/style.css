@@ -1,0 +1,53 @@
+.clearfix:before,
+.clearfix:after {
+    content: "";
+    display: table;
+}
+.clearfix:after {
+    clear: both;
+}
+
+
+
+.lets-build-content{
+	width: 750px;
+	margin-bottom: 30px;
+
+}
+
+.lets-build-sm{
+width: 600px;
+margin-top: 30px;
+
+}
+
+
+.lets-build{
+	width:215px;
+	float: left;
+	margin-right: 50px;
+	margin-bottom: 30px;
+}
+#one{
+	color:#8FD6D8;
+	font-size: 35px;
+}
+#two{
+	color:#6DC4F2;
+	font-size: 35px;
+}
+#three{
+	color:#FFD13C;
+	font-size: 35px;
+}
+#four{
+	color:#F44336;
+	font-size: 35px;
+}
+#five{
+	font-size: 10px;
+}
+
+.head-mid{
+	background-image: url('');
+}

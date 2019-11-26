@@ -1,0 +1,61 @@
+.carousel-container{
+    width:900px;
+    height:500px;
+   overflow:hidden;
+    margin:0 auto;
+    position: relative;
+    
+}
+.carousel-image-wrapper{
+    position: relative;
+   
+   
+    
+    
+}
+.carousel-image-wrapper img{
+   position: absolute;
+
+
+}
+
+.prev, .next {
+    cursor: pointer;
+    position: absolute;
+    top: 40%;
+    width: auto;
+    padding: 16px;
+    margin-top: -22px;
+    color:red;
+    font-weight: bold;
+    font-size: 18px;
+    
+    border-radius: 0 3px 3px 0;
+    user-select: none;
+  }
+  
+  
+  .next {
+    right:10px;
+    border-radius: 3px 0 0 3px;
+    float: right;
+  }
+  .prev:hover, .next:hover {
+    background-color: rgba(0,0,0,0.8);
+  }
+
+  .dot {
+    cursor: pointer;
+    height: 15px;
+    width: 15px;
+    margin-top:480px;
+    background-color:red;
+    border-radius: 50%;
+    display: inline-block;
+     position: relative;
+    
+  }
+  
+  .active, .dot:hover {
+    background-color: #717171;
+  }

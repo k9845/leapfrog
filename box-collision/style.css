@@ -1,0 +1,15 @@
+*{
+    margin: 0px;
+    padding: 0px;
+}
+.container{
+    height: 500px;
+    width: 800px;
+    background: #212121;
+    position: relative;
+    margin: 0 auto;
+}
+.box{
+    background: red;
+    position: absolute;
+}

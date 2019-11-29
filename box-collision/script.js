@@ -28,6 +28,10 @@
             this.element.onclick = function(){
                 that.element.style.backgroundImage = "url('https://www.animatedimages.org/data/media/183/animated-ant-image-0039.gif')"
                 that.state = 'dead';
+                setTimeout(function(){
+                    that.parentElement.removeChild(that.element);
+                },2000)
+            
                 console.log(this.state);
             }   
 
@@ -136,7 +140,8 @@
                     
                    }
                    else{
-                       console.log(boxes[i].state);
+                       //console.log(boxes[i].state);
+                       boxes.splice(i,1);
 
                        
                    }

@@ -1,4 +1,3 @@
-
 (function(){
     function Box(parentElement,x,y,height,width,dx,dy,force,time,mass){
         this.x = x ||12;
@@ -24,6 +23,10 @@
             // this.draw();
             this.element.style.left = this.x + 'px';
             this.element.style.top = this.y + 'px';
+
+            this.element.onclick = function(){
+                that.element.style.display = 'none';
+            }
            return this;
 
         }
@@ -88,8 +91,8 @@
             for(var i=0; i<this.boxcount; i++){
                 var randx = getrandomnumber(0,MAX_WIDTH-width);
                 var randy= getrandomnumber(0,MIN_HEIGHT-height);
-                var height = 20;
-                var width = 20;
+                var height = 40;
+                var width = 40;
                 var mass  = 3;
                 var time = 4;
                 var force ;
@@ -107,8 +110,8 @@
                 // (a.x + a.width > b.x && a.x + a.width <= b.x + b.width) || (b.x + b.width > a.x && b.x + b.width <= a.x + a.width)) && 
                 // ((a.y + a.height > b.y && a.y + a.height <= b.y + b.height) || (b.y + b.height > a.y && b.y + b.height <= a.y + a.height)
                 
-                var dx = getrandomnumber(-2,2);
-                var dy = getrandomnumber(-2,2);
+                var dx = getrandomnumber(-5,5);
+                var dy = getrandomnumber(-5,5);
                 var box = new Box(this.parentElement,randx,randy,height,width,dx,dy,mass,time,force).draw();
                     
                 

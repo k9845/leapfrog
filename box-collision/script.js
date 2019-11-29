@@ -23,10 +23,14 @@
             // this.draw();
             this.element.style.left = this.x + 'px';
             this.element.style.top = this.y + 'px';
+            this.state= 'alive';
 
             this.element.onclick = function(){
-                that.element.style.display = 'none';
-            }
+                that.element.style.backgroundImage = "url('https://www.animatedimages.org/data/media/183/animated-ant-image-0039.gif')"
+                that.state = 'dead';
+                console.log(this.state);
+            }   
+
            return this;
 
         }
@@ -38,15 +42,18 @@
         }
 
         this.move = function(dx,dy){
-            this.x += this.dx;
-            this.y +=this.dy;
+            
+                this.x += this.dx;
+                this.y +=this.dy;
+        
+            
              this.element.style.left = this.x + 'px';
              this.element.style.top = this.y + 'px';
              if((this.x+this.width>=800) ||this.x<=0 || (this.y+this.height>=500) ||this.y<=0){
                 this.dx =-this.dx;
                 this.dy = -this.dy;
                 this.force = ((this.dx+this.dy)/this.time) * this.mass;
-                console.log('force',this.force);
+                //console.log('force',this.force);
              }
              
      }
@@ -123,8 +130,17 @@
             }
             this.moveBoxes = function(){
                 for(var i =0; i<this.boxcount;i++){
+                   if(boxes[i].state == 'alive'){
                     boxes[i].move();
-                    boxes[i].checkCollision(boxes);
+                    boxes[i].checkCollision(boxes);  
+                    
+                   }
+                   else{
+                       console.log(boxes[i].state);
+
+                       
+                   }
+                   
                 }
             }
         }

@@ -145,7 +145,8 @@
 
                        
                    }
-                   
+                   //console.log(boxes.length);
+                   document.getElementById('ant').innerHTML = boxes.length;
                 }
             }
         }

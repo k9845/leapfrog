@@ -1,0 +1,13 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+.container{
+    background-image: url('background.png');
+    background-size: contain;
+    height: 800px;
+    width:800px;
+    left:250px;
+    position: absolute;
+    overflow: hidden;
+}

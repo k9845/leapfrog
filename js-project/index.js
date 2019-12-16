@@ -23,8 +23,8 @@ const OBS_LARGE = 20; //points for large obstacles
 const OBS_MEDIUM = 50; //points for medium obstacles
 const OBS_SMALL = 100; //points for small obstacles
 const SAVE_KEY_SCORE = "highscore"; // save key for local storage of high score
-const SOUND_ON = false;
-const MUSIC_ON = false;
+const SOUND_ON = true;
+const MUSIC_ON = true;
 //for automation
 const AUTOMATION_ON = true;
 //for neural network
@@ -35,7 +35,7 @@ const NUM_SAMPLES = 500000;//no of training samples
 const OUTPUT_LEFT = 0; //expected neural output for left turn
 const OUTPUT_RIGHT  = 1;//expected neural output for right turn
 const OUTPUT_THRESHOLD = 0.5 ; // how close the prediction must be to control to a turn
-const RATE_OF_FIRE = 15;//shot of fire
+const RATE_OF_FIRE = 25;//shot of fire
 
 var canv = document.getElementById('gameCanvas');
 var ctx = canv.getContext('2d');
@@ -152,10 +152,12 @@ function destroyObstacles(index){
         newLevel();
     }
 }
+
 function distBetweenPoints(x1,y1,x2,y2){
     return Math.sqrt(Math.pow(x2-x1,2)+Math.pow(y2-y1,2));
 }
 var colour;
+
 function drawShooter(x,y,a,colour = 'red'){
     ctx.strokeStyle = colour;
     ctx.lineWidth = SHOOTER_SIZE /20;
@@ -178,6 +180,7 @@ ctx.closePath();
 
 ctx.stroke();
 }
+
 function explodeShooter(){
    shooter.explodeTime = Math.ceil(SHOT_EXPLODE_DUR *FPS);
     fxExplode.play();
@@ -300,6 +303,7 @@ function newShooter(){
     }
 
 }
+
 function noramlizeInput(obstaclesX,obstaclesY,obstaclesA,shooterA){
     //noramize the values to between 
     let input = [];
@@ -310,12 +314,14 @@ function noramlizeInput(obstaclesX,obstaclesY,obstaclesA,shooterA){
     return input;
 
 }
+
 function rotateGun(right){
     let sign = right ? -1 : 1;
     shooter.rot = TURN_SPEED /180 *Math.PI /FPS *sign;
 
 
 }
+
 function shootgun(){
     //create gun object
     if(shooter.canShoot && shooter.gun.length < GUN_MAX){
@@ -332,6 +338,7 @@ function shootgun(){
     //prevent further shooting
     shooter.canShoot = false;
 }
+
 function  Music(srcLow,srcHigh){
     this.soundLow = new Audio(srcLow);
     this.soundHigh = new Audio(srcHigh);
@@ -390,6 +397,7 @@ function Sound(src,maxStreams = 1,vol= 1.0){
     }
 
 }
+
 function update(){
     var blinkOn = shooter.blinkNum %2 == 0;
 
@@ -406,6 +414,11 @@ function update(){
                 dist1 = dist0;
                 c= i;
             }
+
+            //  }else if(dist0>dist1){
+            //     shooter.x += shooter.x + 5;
+            //     shooter.y += shooter.y + 5;
+            // }
         }
         //make a prediction
         let ox = obstacles[c].x;

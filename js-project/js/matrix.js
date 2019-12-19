@@ -20,6 +20,7 @@ class Matrix {
                 }
             }
         } else {
+            
             // check data integrity
             if (data.length != rows || data[0].length != cols) {
                 throw new Error("Incorrect data dimensions!");
@@ -132,6 +133,8 @@ class Matrix {
         for (let i = 0; i < this.rows; i++) {
             for (let j = 0; j < this.cols; j++) {
                 this.data[i][j] = Math.random() * 2 - 1;
+                
+                
             }
         }
     }

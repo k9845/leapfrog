@@ -1,3 +1,4 @@
+
 const FPS = 60; //frames in second
 const SHOOTER_SIZE = 30; ///size in pixel
 const TURN_SPEED = 360; //degree in second
@@ -25,17 +26,8 @@ const OBS_SMALL = 100; //points for small obstacles
 const SAVE_KEY_SCORE = "highscore"; // save key for local storage of high score
 const SOUND_ON = true;
 const MUSIC_ON = true;
-//for automation
-const AUTOMATION_ON = true;
-//for neural network
-const NUM_INPUTS = 4;
-const NUM_HIDDEN = 20;
-const NUM_OUTPUTS = 1;
-const NUM_SAMPLES = 500000;//no of training samples
-const OUTPUT_LEFT = 0; //expected neural output for left turn
-const OUTPUT_RIGHT  = 1;//expected neural output for right turn
-const OUTPUT_THRESHOLD = 0.5 ; // how close the prediction must be to control to a turn
-const RATE_OF_FIRE = 25;//shot of fire
+
+
 
 var canv = document.getElementById('gameCanvas');
 var ctx = canv.getContext('2d');
@@ -54,36 +46,6 @@ var obsLeft,obsTotal;
 var level ,lives,score,scoreHigh, shooter,obstacles,text,textAlpha;
 newGame();
 
-//set up the neural network
-var nn,aiShootTime = 0;
-if (AUTOMATION_ON) {
-    //
-    nn = new NeuralNetwork(NUM_INPUTS,NUM_HIDDEN,NUM_OUTPUTS)
-    //train the network
-    let ox,oy,sa,sx,sy;
-    for(let i = 0;i< NUM_SAMPLES;i++){
-        
-        //random obstacles location (include off-screen data)
-        ox = Math.random()*(canv.width + OBS_SIZE)- OBS_SIZE/2;
-        oy = Math.random()*(canv.height + OBS_SIZE)- OBS_SIZE/2;
-
-        //shooter angle and position
-        sa = Math.random() *Math.PI *2;
-        sx = shooter.x;
-        sy = shooter.y;
-
-        //calculate the angle to the obstacles
-        let angle = angleToPoint(sx,sy,sa,ox,oy);
-
-        //direction to turn
-        let direction = angle > Math.PI ? OUTPUT_LEFT : OUTPUT_RIGHT;
-
-        //train the network
-        nn.train(noramlizeInput(ox,oy,angle,sa),[direction]);
-    
-    }
-}
-
 
 //event handlers
 
@@ -93,12 +55,6 @@ document.addEventListener('keyup',keyUp);
 //set up the game loop;
 setInterval(update,1000/FPS);
 
-function angleToPoint(x,y,bearing,targetX,targetY){
-    let angleToTarget = Math.atan2(-targetY + y,targetX -x);
-    let diff = bearing - angleToTarget;
-    return (diff + Math.PI *2) % (Math.PI *2);
-
-}
 function createObstacles(){
     obstacles = [];
     obsTotal =(OBS_NUM +level)* 7;
@@ -114,6 +70,7 @@ function createObstacles(){
         obstacles.push(newObstacles(x,y,Math.ceil(OBS_SIZE /2)));
     }
 }
+
 function destroyObstacles(index){
     var x = obstacles[index].x;
     var y = obstacles[index].y;
@@ -191,10 +148,14 @@ function gameOver(){
     shooter.dead = true;
     text = 'GAME OVER';
     textAlpha = 1.0;
+    if(shooter.dead = true){
+        window.location = 'start.html';
+    }
+
 
 }
 function keyDown(ev){
-    if(shooter.dead || AUTOMATION_ON){
+    if(shooter.dead ){
         return;
     }
     switch(ev.keyCode){
@@ -203,9 +164,9 @@ function keyDown(ev){
            rotateGun(false);
             break;
         case 32://space bar for shoot
-           shootgun();
            
-            break;
+                shootgun();
+                break;
          case 38://up arrow(thrust)
             shooter.thrusting = true;
            
@@ -214,10 +175,12 @@ function keyDown(ev){
         //shooter.rot = -TURN_SPEED /180 *Math.PI /FPS;
             rotateGun(true);
             break;  
+        
+
     }
 }
 function keyUp(ev){
-    if(shooter.dead || AUTOMATION_ON){
+    if(shooter.dead ){
         return;
     }
     switch(ev.keyCode){
@@ -304,22 +267,12 @@ function newShooter(){
 
 }
 
-function noramlizeInput(obstaclesX,obstaclesY,obstaclesA,shooterA){
-    //noramize the values to between 
-    let input = [];
-    input[0]  = (obstaclesX+OBS_SIZE/2)/(canv.width + OBS_SIZE);
-    input[1]  = (obstaclesY+OBS_SIZE/2)/(canv.height + OBS_SIZE);
-    input[2] = shooterA /(Math.PI*2);
-    input[3] = obstaclesA /(Math.PI*2);
-    return input;
 
-}
 
 function rotateGun(right){
     let sign = right ? -1 : 1;
     shooter.rot = TURN_SPEED /180 *Math.PI /FPS *sign;
-
-
+   
 }
 
 function shootgun(){
@@ -403,65 +356,16 @@ function update(){
 
     var exploding = shooter.explodeTime >0;
 
-    //use the neural to control and shoot 
-    if(AUTOMATION_ON){
-        //compute the closest obstacles
-        let c = 0;
-        let dist0 = distBetweenPoints(shooter.x,shooter.y,obstacles[0].x,obstacles[0].y);
-        for(let i =1;i<obstacles.length;i++){
-            let dist1 = distBetweenPoints(shooter.x,shooter.y,obstacles[i].x,obstacles[i].y);
-            if(dist1 <dist0){
-                dist1 = dist0;
-                c= i;
-            }
-
-            //  }else if(dist0>dist1){
-            //     shooter.x += shooter.x + 5;
-            //     shooter.y += shooter.y + 5;
-            // }
-        }
-        //make a prediction
-        let ox = obstacles[c].x;
-        let oy = obstacles[c].y;
-        let sa = shooter.a;
-        let sx = shooter.x;
-        let sy = shooter.y;
-        let angle = angleToPoint(sx,sy,sa,ox,oy);
-        let predict = nn.feedForward(noramlizeInput(ox,oy,angle,sa)).data[0][0];
-        //console.log(shooter.a);
-        
-        //make a turn
-        let dLeft = Math.abs(predict-OUTPUT_LEFT);
-        let dRight = Math.abs(predict-OUTPUT_RIGHT);
-
-        if(dLeft < OUTPUT_THRESHOLD){
-            rotateGun(false);
-        }else if(dRight < OUTPUT_THRESHOLD){
-            rotateGun(true);
-        }else{
-            //stop still
-            shooter.rot = 0;
-
-        }
-        //shoot gun 
-        if(aiShootTime ==0){
-            aiShootTime = Math.ceil(FPS/RATE_OF_FIRE);
-            shooter.canShoot = true;
-            shootgun();
-        }else{
-            aiShootTime--;
-        }
-    }
     //ticking the music in the background
     music.tick();
+
+
     //draw background
     ctx.fillStyle  = 'black';
     ctx.fillRect(0,0,canv.width,canv.height);
     
-     
-
     //thrusting
-    if(shooter.thrusting && !shooter.dead){
+    if(shooter.thrusting && !shooter.dead ){
         shooter.thrust.x += SHOOTER_THRUST * Math.cos(shooter.a)/FPS;
         shooter.thrust.y -= SHOOTER_THRUST * Math.sin(shooter.a)/FPS;
         fxThrust.play();
@@ -579,6 +483,7 @@ function update(){
 
            
         }
+        
         //draw gun
         for(var i = 0;i<shooter.gun.length;i++ ){
             if(shooter.gun[i].explodeTime == 0){
@@ -613,12 +518,12 @@ function update(){
             ctx.fillText(text,canv.width/2,canv.height*0.75);
             textAlpha -=(1.0 / TEXT_FADE_TIME/FPS); 
         }else if (shooter.dead){
-            newGame()
+             newGame()
         }
         //draw lives
         var lifeColour;
         for(var i = 0 ;i<lives;i++ ){
-            lifeColour = exploding && i == lives -1 ? 'yellow':'green';
+            lifeColour = exploding && i == lives -1 ? 'yellow':'red';
             drawShooter(SHOOTER_SIZE + i * SHOOTER_SIZE *1.2, SHOOTER_SIZE,0.5 * Math.PI,lifeColour);
             
             
@@ -679,6 +584,7 @@ function update(){
     
         //rotate shooter
          shooter.a +=shooter.rot;
+         
             // keep the angle between 0 and 360
             if(shooter.a <0){
                 shooter.a +=(Math.PI *2);
@@ -695,6 +601,7 @@ function update(){
                 lives--;
                 if(lives == 0){
                     gameOver();
+
 
                 }else{
                     shooter = newShooter();
@@ -721,7 +628,7 @@ function update(){
         for(var i =shooter.gun.length-1;i>=0;i--){
             //check distance travelled
             if(shooter.gun[i].dist >GUN_DIST *canv.width){
-                shooter.gun.splice(i,1);
+               shooter.gun.splice(i,1);
                 continue;
             }
             //handle the explosion
@@ -729,7 +636,7 @@ function update(){
                 shooter.gun[i].explodeTime --;
                 
                 //destroy gun
-                if(shooter.gun[i].explodeTime == 0){
+                if(shooter.gun[i].explodeTime == 0 ){
                     shooter.gun.splice(i,1);
                     continue;
                 }

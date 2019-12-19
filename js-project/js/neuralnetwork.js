@@ -20,7 +20,7 @@ class NeuralNetwork{
         this._bias1.randomWeights();
         
         this._weights0.randomWeights();
-        this.weights1.randomWeights();
+        this._weights1.randomWeights();
 
     }
     get inputs (){
@@ -79,6 +79,7 @@ class NeuralNetwork{
     feedForward(inputArray){
         //converting input array to a matrix
         this.inputs = Matrix.convertFromArray(inputArray);
+      
        
 
         
@@ -100,26 +101,23 @@ class NeuralNetwork{
     train(inputArray,targetArray){
         //feed the input data in network
         let outputs = this.feedForward(inputArray);
-        // console.log("outputs");
-        // console.table(outputs.data);
+       
 
         // //calculate the output errors(target - output)
         
         let targets = Matrix.convertFromArray(targetArray);
-        // console.log("targets");
-        // console.table(targets.data);
+       
         let outputErrors = Matrix.subtract(targets,outputs);
-        // console.log("outputErrors");
-        // console.table(outputErrors.data);
+       
         
         //error logging
         if(LOG_ON){
             if(this.logCount == LOG_FREQ){
-                console.log("error = "+outputErrors.data[0][0]);
+                console.log("error = " +outputErrors.data[0][0]);
                 
             }
             this.logCount--;
-            if(this.logCount ==0){
+            if(this.logCount == 0){
                 this.logCount = LOG_FREQ;
             }
         }
@@ -127,14 +125,12 @@ class NeuralNetwork{
         //calculate the deltas(errors *derivatives of outputs)
         let outputDerivs = Matrix.map(outputs,x => sigmoid(x,true));
         let outputDeltas = Matrix.multiply(outputErrors,outputDerivs);
-        // console.log("outputDeltas");
-        // console.table(outputDeltas.data);
+        
 
         //calulate the hiddden layer errors(delts "dot " transpose of weights)
         let weights1T = Matrix.transpose(this.weights1);
         let hiddenErrors = Matrix.dot(outputDeltas,weights1T);
-        // console.log("hiddenErrors");
-        // console.table(hiddenErrors.data);
+        
 
         //calculate hidden deltas(errors *derivatives of hidden)
         let hiddenDerivs = Matrix.map(this.hidden,x => sigmoid(x,true));
@@ -157,7 +153,7 @@ class NeuralNetwork{
 }
 function sigmoid(x,deriv = false){
     if(deriv){
-        return x*(1-x); //where x = sigmoid(x)
+        return x*(1-x);  //where x = sigmoid(x)
     }
     return 1/(1+Math.exp(-x));
 }

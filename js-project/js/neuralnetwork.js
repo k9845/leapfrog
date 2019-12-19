@@ -113,7 +113,7 @@ class NeuralNetwork{
         //error logging
         if(LOG_ON){
             if(this.logCount == LOG_FREQ){
-                console.log("error = " +outputErrors.data[0][0]);
+                console.log("error = " + outputErrors.data[0][0]);
                 
             }
             this.logCount--;
@@ -135,12 +135,12 @@ class NeuralNetwork{
         //calculate hidden deltas(errors *derivatives of hidden)
         let hiddenDerivs = Matrix.map(this.hidden,x => sigmoid(x,true));
         let hiddenDeltas = Matrix.multiply(hiddenErrors,hiddenDerivs);
-        // console.log("hiddenDeltas");
-        // console.table(hiddenDeltas.data);
+        
 
         //update the weights(add transpose of layer of 'dot 'deltas)
         let hiddenT = Matrix.transpose(this.hidden);
         this.weights1 = Matrix.add(this.weights1,Matrix.dot(hiddenT,outputDeltas));
+        
         let inputsT = Matrix.transpose(this.inputs);
         this.weights0 = Matrix.add(this.weights0,Matrix.dot(inputsT,hiddenDeltas));
         
